@@ -1,22 +1,14 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
 
-from aws_cdk import (
-    aws_ec2 as ec2,
-    aws_s3 as s3,
-    aws_ecs as ecs,
-    aws_rds as rds,
-    aws_iam as iam,
-    aws_secretsmanager as sm,
-    aws_ecs_patterns as ecs_patterns,
-    App,
-    Stack,
-    CfnParameter,
-    CfnOutput,
-    Aws,
-    RemovalPolicy,
-    Duration,
-)
+from aws_cdk import App, Aws, CfnOutput, CfnParameter, Duration, RemovalPolicy, Stack
+from aws_cdk import aws_ec2 as ec2
+from aws_cdk import aws_ecs as ecs
+from aws_cdk import aws_ecs_patterns as ecs_patterns
+from aws_cdk import aws_iam as iam
+from aws_cdk import aws_rds as rds
+from aws_cdk import aws_s3 as s3
+from aws_cdk import aws_secretsmanager as sm
 from constructs import Construct
 
 
@@ -120,7 +112,7 @@ class MLflowStack(Stack):
                 version=rds.MysqlEngineVersion.VER_8_0_34
             ),
             instance_type=ec2.InstanceType.of(
-                ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL
+                ec2.InstanceClass.BURSTABLE3, ec2.InstanceSize.MICRO
             ),
             vpc=vpc,
             security_groups=[sg_rds],
