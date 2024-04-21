@@ -8,15 +8,16 @@ deploy a Scikit-Learn based ML model (Random Forest) and track experiment runs a
 
 This implementation shows how to do the following:
 
-* Host a serverless MLflow server on AWS Fargate with S3 as artifact store and RDS and backend stores
-* Track experiment runs running on SageMaker with MLflow
-* Register models trained in SageMaker in the MLflow model registry
-* Deploy an MLflow model into a SageMaker endpoint
+- Host a serverless MLflow server on AWS Fargate with S3 as artifact store and RDS and backend stores
+- Track experiment runs running on SageMaker with MLflow
+- Register models trained in SageMaker in the MLflow model registry
+- Deploy an MLflow model into a SageMaker endpoint
 
 ### MLflow tracking server
+
 You can set a central MLflow tracking server during your ML project. By using this remote MLflow server, data scientists
 will be able to manage experiments and models in a collaborative manner.
-An MLflow tracking server also has two components for storage: a ```backend store``` and an ```artifact store```. This
+An MLflow tracking server also has two components for storage: a `backend store` and an `artifact store`. This
 implementation uses an Amazon S3 bucket as artifact store and an Amazon RDS instance for MySQL as backend store.
 
 ![](media/architecture-mlflow.png)
@@ -26,10 +27,11 @@ implementation uses an Amazon S3 bucket as artifact store and an Amazon RDS inst
 We will use [the AWS CDK](https://cdkworkshop.com/) to deploy the MLflow server.
 
 To go through this example, make sure you have the following:
-* An AWS account where the service will be deployed
-* [AWS CDK installed and configured](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html). Make sure to have the credentials and permissions to deploy the stack into your account
-* [Docker](https://www.docker.com) to build and push the MLflow container image to ECR
-* This [Github repository](https://github.com/aws-samples/amazon-sagemaker-mlflow-fargate) cloned into your environment to follow the steps
+
+- An AWS account where the service will be deployed
+- [AWS CDK installed and configured](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html). Make sure to have the credentials and permissions to deploy the stack into your account
+- [Docker](https://www.docker.com) to build and push the MLflow container image to ECR
+- This [Github repository](https://github.com/aws-samples/amazon-sagemaker-mlflow-fargate) cloned into your environment to follow the steps
 
 ### Deploying the stack
 
@@ -52,8 +54,8 @@ cdk bootstrap aws://${ACCOUNT_ID}/${AWS_REGION}
 cdk deploy --parameters ProjectName=mlflow --require-approval never
 ```
 
-The first 2 commands will get your account ID and current AWS region using the AWS CLI on your computer. ```cdk
-bootstrap``` and ```cdk deploy``` will build the container image locally, push it to ECR, and deploy the stack. 
+The first 2 commands will get your account ID and current AWS region using the AWS CLI on your computer. `cdk
+bootstrap` and `cdk deploy` will build the container image locally, push it to ECR, and deploy the stack.
 
 The stack will take a few minutes to launch the MLflow server on AWS Fargate, with an S3 bucket and a MySQL database on
 RDS. You can then use the load balancer URI present in the stack outputs to access the MLflow UI:
@@ -69,7 +71,7 @@ this: [Access Private applications on AWS Fargate using Amazon API Gateway Priva
 
 You now have a remote MLflow tracking server running accessible through
 a [REST API](https://mlflow.org/docs/latest/rest-api.html#rest-api) via
-the [load balancer uri](https://mlflow.org/docs/latest/quickstart.html#quickstart-logging-to-remote-server). 
+the [load balancer uri](https://mlflow.org/docs/latest/quickstart.html#quickstart-logging-to-remote-server).
 You can use the MLflow Tracking API to log parameters, metrics, and models when running your machine learning project with Amazon
 SageMaker. For this you will need install the MLflow library when running your code on Amazon SageMaker and set the
 remote tracking uri to be your load balancer address.
@@ -96,9 +98,9 @@ repository for more details on using custom Scikit-learn scipts with Amazon Sage
 
 Follow the step-by-step guide by executing the notebooks in the following folders:
 
-* lab/1_track_experiments.ipynb
-* lab/2_track_experiments_hpo.ipynb
-* lab/3_deploy_model.ipynb
+- lab/1_track_experiments.ipynb
+- lab/2_track_experiments_hpo.ipynb
+- lab/3_deploy_model.ipynb
 
 ### Current limitation on user access control
 
@@ -115,3 +117,21 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
 
+git clone https://github.com/aws-samples/amazon-sagemaker-mlflow-fargate.git
+cd amazon-sagemaker-mlflow-fargate/
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+npm install -g aws-cdk
+cdk --version
+cdk deploy --parameters ProjectName=mlflow --require-approval never
+aws sts get-caller-identity
+aws configure get region
+aws sts get-caller-identity
+cdk bootstrap aws://<AWS の ID>>/ap-northeast-1
+cdk doctor
+aws configure
+cdk bootstrap
+cdk deploy --parameters ProjectName=mlflow --require-approval never
+ll
+cdk destroy --parameters ProjectName=mlflow --require-approval never
